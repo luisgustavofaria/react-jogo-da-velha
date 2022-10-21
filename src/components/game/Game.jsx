@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import styles from "./Game.module.css"
 import GameOption from "../gameOption/GameOption"
-import Icon from "../icon/Icon"
+import GameInfo from "../gameInfo/GameInfo"
 
 const winnerTable = [
     [0, 1, 2],
@@ -36,6 +36,12 @@ function Game () {
         })
     }
 
+    const handleReset = () => {
+        setGameState(Array(9).fill(0))
+        steWinner(0)
+        setCurrentPlayer(-1)
+    }
+
     /*useEffect: primeira pos function, segunda pos Array (se alguma coisa do Array for modificada ele chama a function*/
     useEffect( () => {
         setCurrentPlayer(currentPlayer * -1)
@@ -55,15 +61,11 @@ function Game () {
                     )
                 } 
             </div>
-            <div className={styles.gameInfo}>
-                <h4>O Proximo a Jogar é:</h4>
-                {
-                    currentPlayer === 1 && <Icon iconName="circle"/>
-                }
-                {
-                    currentPlayer === -1 && <Icon iconName="x"/>
-                }
-            </div>
+            <GameInfo
+                currentPlayer={currentPlayer}
+                winner={winner}
+                onReset={handleReset}
+            />
         </div>
         
     )
