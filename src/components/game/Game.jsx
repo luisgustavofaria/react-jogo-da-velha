@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import styles from "./Game.module.css"
 import GameOption from "../gameOption/GameOption"
 import GameInfo from "../gameInfo/GameInfo"
+import Score from "../score/Score"
 
 const winnerTable = [
     [0, 1, 2],
@@ -20,6 +21,8 @@ function Game () {
     const [winner, setWinner] = useState(0)
     const [winnerLine, setWinnerLine] = useState([])
     const [draw, setDraw] = useState(false)
+    const [xWinnerTimes, setXWinnerTimes] = useState(0)
+    const [circleWinnerTimes, setCircleWinnerTimes] = useState(0)
     
     
 
@@ -38,6 +41,11 @@ function Game () {
             if (sum === 3 || sum === -3 ) { 
                 setWinner( sum / 3) 
                 setWinnerLine(line)
+                if (sum > 0) {
+                    setCircleWinnerTimes(circleWinnerTimes + 1)
+                  } else {
+                    setXWinnerTimes(xWinnerTimes + 1)
+                  }
             }
         })
     }
@@ -70,27 +78,33 @@ function Game () {
     }, [winner])
 
     return (
-        <div className={styles.gameContent}>
-            <div className={styles.game}>
-                {
-                    gameState.map((value, pos) =>
+        <>
+            <div className={styles.gameContent}>
+                <div className={styles.game}>
+                    {
+                        gameState.map((value, pos) =>
                         <GameOption
-                            key={`game-option-pos-${pos}`}
-                            status={value}
-                            onClick={ () => handleCLick(pos) } 
-                            isWinner={verifyWinnerLine(pos)}  
-                            isDraw={draw}                       
+                        key={`game-option-pos-${pos}`}
+                        status={value}
+                        onClick={ () => handleCLick(pos) } 
+                        isWinner={verifyWinnerLine(pos)}  
+                        isDraw={draw}                       
                         />  
-                    )
-                } 
+                        )
+                    } 
+                </div>
+                <GameInfo
+                    currentPlayer={currentPlayer}
+                    winner={winner}
+                    onReset={handleReset}
+                    isDraw={draw}
+                    />
             </div>
-            <GameInfo
-                currentPlayer={currentPlayer}
-                winner={winner}
-                onReset={handleReset}
-                isDraw={draw}
+            <Score 
+                xWinnerTimes={xWinnerTimes}
+                circleWinnerTimes={circleWinnerTimes}
             />
-        </div>
+        </>
         
     )
 }
