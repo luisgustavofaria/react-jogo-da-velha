@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "biuld": "next biuld",
+    "start": "next start"
   },
   "keywords": [],
   "author": "",
